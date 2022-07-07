@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fresher test ASP.NET Core Web API Dapper ORM", "fresher test ASP.NET Core Web API Dapper ORM.csproj", "{1AE47CE0-0C5E-4F48-97A1-19D0E19BC8EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1AE47CE0-0C5E-4F48-97A1-19D0E19BC8EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AE47CE0-0C5E-4F48-97A1-19D0E19BC8EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AE47CE0-0C5E-4F48-97A1-19D0E19BC8EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AE47CE0-0C5E-4F48-97A1-19D0E19BC8EF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DE614B3A-A337-4278-96D5-24B1A2557A08}
+	EndGlobalSection
+EndGlobal
