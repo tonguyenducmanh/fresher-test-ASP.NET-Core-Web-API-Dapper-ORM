@@ -28,7 +28,7 @@ namespace fresher_test_ASP.NET_Core_Web_API_Dapper_ORM.Controllers
             using (IDbConnection db = new MySqlConnection("server=localhost;port=5060;user=root;password=140300;database=customerdatabase"))
             {
 
-                customerIds = db.Query<string>(new PostCustomerAllQuery().query(PostSearchAndFilter)).ToList();
+                customerIds = db.Query<string>(sqlGetCustomerIds).ToList();
             }
 
             // query lấy danh sách
@@ -75,5 +75,224 @@ namespace fresher_test_ASP.NET_Core_Web_API_Dapper_ORM.Controllers
             }
             return Ok(customers);
         }
+
+        // POST : /customers/count đếm lượng người dùng
+        [HttpPost()]
+        [Route("/customers/count")]
+        public async Task<ActionResult> PostCountCustomer([FromForm] PostSearchAndFilter PostSearchAndFilter)
+        {
+            // tương tự trường hợp trên, tuy nhiên chỉ dùng query đầu để đếm lượng khách hàng,
+            // cũng như bỏ qua toàn bộ LIMIT và OFFSET
+            // dùng SELECT DISTINCT để chỉ 
+
+            string sqlGetCustomerIds = new PostCountCustomerQuery().query(PostSearchAndFilter);
+            int customerIds = 0 ;
+            using (IDbConnection db = new MySqlConnection("server=localhost;port=5060;user=root;password=140300;database=customerdatabase"))
+            {
+
+                customerIds = db.Query<int>(sqlGetCustomerIds).First();
+            }
+
+
+            return Ok(customerIds);
+        }
+
+        // GET : /customers/last tải bản ghi cuối cùng
+        [HttpGet()]
+        [Route("/customers/last")]
+        public async Task<ActionResult> GetLastCustomer()
+        {
+            // tương tự trường hợp đầu, cần dùng 2 query.
+            // 1 query để lấy id cuối cùng
+            // 1 query để lấy thông tin, do nó có liên kết nhiều bảng với nhau
+            // ở đây dùng subqueries cho nhanh
+
+            var sqlGetLast = new GetLastCustomerQuery().query();
+            List<customer> customers = new();
+            using (IDbConnection db = new MySqlConnection("server=localhost;port=5060;user=root;password=140300;database=customerdatabase"))
+            {
+            var customerDictionary = new Dictionary<string, customer>();
+
+                customers = db.Query<customer, loaitiemnang, the, history, customer>
+                            (sqlGetLast, (customer, loaitiemnang, the, history)
+                                =>
+                            {
+                                customer cusomerEntry;
+                                if (!customerDictionary.TryGetValue(customer._id, out cusomerEntry))
+                                {
+                                    cusomerEntry = customer;
+                                    cusomerEntry.loaitiemnang = new List<string>();
+                                    cusomerEntry.the = new List<string>();
+                                    cusomerEntry.history = new List<string>();
+                                    customerDictionary.Add(cusomerEntry._id, cusomerEntry);
+                                }
+                                if (loaitiemnang != null)
+                                {
+                                    cusomerEntry.loaitiemnang.Add(loaitiemnang.loaitiemnangContent);
+                                }
+                                else { cusomerEntry.loaitiemnang.Add(null); }
+
+                                if (the != null)
+                                {
+                                    cusomerEntry.the.Add(the.theContent);
+                                }
+                                else { cusomerEntry.the.Add(null); }
+
+                                if (history != null)
+                                {
+                                    cusomerEntry.history.Add(history.historyContent);
+                                }
+                                else { cusomerEntry.history.Add(null); }
+
+                                return cusomerEntry;
+                            }, splitOn: "loaitiemnangContent, theContent, historyContent")
+                            .Distinct().ToList();
+            }
+            return Ok(customers.First());
+        }
+
+        // POST : /customers/find tìm danh sách người dùng theo id (để xuất ra file excell)
+        [HttpPost()]
+        [Route("/customers/find")]
+        public async Task<ActionResult> PostFindCustomer(string[] idsString)
+        {
+
+            // tương tự trường hợp đầu, cần dùng 2 query.
+            // 1 query để lấy id cuối cùng
+            // 1 query để lấy thông tin, do nó có liên kết nhiều bảng với nhau
+            // ở đây dùng subqueries cho nhanh
+
+            var sqlGetFind = new PostFindCustomerQuery().query(idsString);
+            var customerDictionary = new Dictionary<string, customer>();
+            List<customer> customers = new();
+            using (IDbConnection db = new MySqlConnection("server=localhost;port=5060;user=root;password=140300;database=customerdatabase"))
+            {
+
+                customers = db.Query<customer, loaitiemnang, the, history, customer>
+                            (sqlGetFind, (customer, loaitiemnang, the, history)
+                                =>
+                            {
+                                customer cusomerEntry;
+                                if (!customerDictionary.TryGetValue(customer._id, out cusomerEntry))
+                                {
+                                    cusomerEntry = customer;
+                                    cusomerEntry.loaitiemnang = new List<string>();
+                                    cusomerEntry.the = new List<string>();
+                                    cusomerEntry.history = new List<string>();
+                                    customerDictionary.Add(cusomerEntry._id, cusomerEntry);
+                                }
+                                if (loaitiemnang != null)
+                                {
+                                    cusomerEntry.loaitiemnang.Add(loaitiemnang.loaitiemnangContent);
+                                }
+                                else { cusomerEntry.loaitiemnang.Add(null); }
+
+                                if (the != null)
+                                {
+                                    cusomerEntry.the.Add(the.theContent);
+                                }
+                                else { cusomerEntry.the.Add(null); }
+
+                                if (history != null)
+                                {
+                                    cusomerEntry.history.Add(history.historyContent);
+                                }
+                                else { cusomerEntry.history.Add(null); }
+
+                                return cusomerEntry;
+                            }, splitOn: "loaitiemnangContent, theContent,historyContent")
+                            .Distinct().ToList();
+            }
+            return Ok(customers);
+    }
+
+        // GET : /customers/check check người dùng
+        [HttpGet()]
+        [Route("/customers/check")]
+        public async Task<ActionResult> GetCheckCustomer(string findID)
+        {
+            var sqlGetCheck = new GetCheckCustomer().query(findID);
+            var customerDictionary = new Dictionary<string, customer>();
+            List<customer> customers = new();
+            using (IDbConnection db = new MySqlConnection("server=localhost;port=5060;user=root;password=140300;database=customerdatabase"))
+            {
+
+                customers = db.Query<customer, loaitiemnang, the, history, customer>
+                            (sqlGetCheck, (customer, loaitiemnang, the, history)
+                                =>
+                            {
+                                customer cusomerEntry;
+                                if (!customerDictionary.TryGetValue(customer._id, out cusomerEntry))
+                                {
+                                    cusomerEntry = customer;
+                                    cusomerEntry.loaitiemnang = new List<string>();
+                                    cusomerEntry.the = new List<string>();
+                                    cusomerEntry.history = new List<string>();
+                                    customerDictionary.Add(cusomerEntry._id, cusomerEntry);
+                                }
+                                if (loaitiemnang != null)
+                                {
+                                    cusomerEntry.loaitiemnang.Add(loaitiemnang.loaitiemnangContent);
+                                }
+                                else { cusomerEntry.loaitiemnang.Add(null); }
+
+                                if (the != null)
+                                {
+                                    cusomerEntry.the.Add(the.theContent);
+                                }
+                                else { cusomerEntry.the.Add(null); }
+
+                                if (history != null)
+                                {
+                                    cusomerEntry.history.Add(history.historyContent);
+                                }
+                                else { cusomerEntry.history.Add(null); }
+
+                                return cusomerEntry;
+                            }, splitOn: "loaitiemnangContent, theContent,historyContent")
+                            .Distinct().ToList();
+            }
+            return Ok(customers.First());
+        }
+
+        // POST: /customers (thêm bản ghi vào các cơ sở dữ liệu)
+        [HttpPost()]
+        [Route("/customers")]
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult> PostCreateCustomer(
+            [FromForm] PostCustomerBody PostCustomerBody
+            )
+        {
+            var sqlCreateCustomer = new PostCreateCustomerQuery().query(PostCustomerBody);
+            List<string> customerIds = new();
+            using (IDbConnection db = new MySqlConnection("server=localhost;port=5060;user=root;password=140300;database=customerdatabase"))
+            {
+
+                customerIds = db.Query<string>(sqlCreateCustomer).ToList();
+            }
+            return Ok();
+        }
+
+        // PUT:/customers/edit chỉnh sửa ở mức cơ bản, yêu cầu phải trùng id của tất cả các cơ sở dữ liệu
+        [HttpPut()]
+        [Route("/customers/edit")]
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult> PutEditCustomer(
+            [FromForm] PostCustomerBody PostCustomerBody
+            )
+        {
+            return Ok();
+        }
+
+        // POST : /customers/delete xóa nhiều bản ghi
+        [HttpPost()]
+        [Route("/customers/delete")]
+        public async Task<ActionResult> PostDeleteCustomer(string[] idsString)
+        {
+            
+            return Ok();
+        }
+
+
     }
 }
