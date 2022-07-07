@@ -281,6 +281,13 @@ namespace fresher_test_ASP.NET_Core_Web_API_Dapper_ORM.Controllers
             [FromForm] PostCustomerBody PostCustomerBody
             )
         {
+            var sqlCreateCustomer = new PostUpdateCustomerQuery().query(PostCustomerBody);
+            List<string> customerIds = new();
+            using (IDbConnection db = new MySqlConnection("server=localhost;port=5060;user=root;password=140300;database=customerdatabase"))
+            {
+
+                customerIds = db.Query<string>(sqlCreateCustomer).ToList();
+            }
             return Ok();
         }
 
@@ -289,7 +296,20 @@ namespace fresher_test_ASP.NET_Core_Web_API_Dapper_ORM.Controllers
         [Route("/customers/delete")]
         public async Task<ActionResult> PostDeleteCustomer(string[] idsString)
         {
-            
+
+
+            // tương tự trường hợp đầu, cần dùng 2 query.
+            // 1 query để lấy id cuối cùng
+            // 1 query để lấy thông tin, do nó có liên kết nhiều bảng với nhau
+            // ở đây dùng subqueries cho nhanh
+
+            var sqlPostDelete = new PostDeleteCustomerQuery().query(idsString);
+            List<string> customers = new();
+            using (IDbConnection db = new MySqlConnection("server=localhost;port=5060;user=root;password=140300;database=customerdatabase"))
+            {
+
+                customers = db.Query<string>(sqlPostDelete).ToList();
+            }
             return Ok();
         }
 
