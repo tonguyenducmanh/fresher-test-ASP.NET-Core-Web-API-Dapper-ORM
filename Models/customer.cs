@@ -16,19 +16,18 @@ namespace fresher_test_ASP.NET_Core_Web_API.Models
         public string? chucdanh { get; set; }
         public string? dtdidong { get; set; }
         public string? dtcoquan { get; set; }
-        public ICollection<loaitiemnang>? loaitiemnang { get; set; }
-        public ICollection<the>? the { get; set; }
+        public List<string>? loaitiemnang { get; set; }
+        //loại tiềm năng được gán thẳng giá trị mảng, theo dạng List<string>
+        //để phù hợp với kết quả của bên client yêu cầu là dạng json.
+        //nếu lấy tất cả thì dùng customerEntry.loaitiemnang = new List<loatiemnang>
+        //và sửa model customer chỗ list<string> loại tiềm năng thành ICollection<loaitiemnang>
+        // như bên entity framework ( cả ở file này và file customerController.cs
+        public List<string>? the { get; set; }
         public string? nguongoc { get; set; }
         public string? zalo { get; set; }
         public string? emailcanhan { get; set; }
         public string? emailcoquan { get; set; }
         public string? tochuc { get; set; }
-
-        internal object GetType(string filterValue)
-        {
-            throw new NotImplementedException();
-        }
-
         public string? masothue { get; set; }
         public string? taikhoannganhang { get; set; }
         public string? motainganhang { get; set; }
@@ -44,6 +43,6 @@ namespace fresher_test_ASP.NET_Core_Web_API.Models
         public string? sonha { get; set; }
         public string? mota { get; set; }
         public bool dungchung { get; set; }
-        public ICollection<history>? history { get; set; }
+        public List<string>? history { get; set; }
     }
 }

@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Queries\" />
     <Folder Include="Models\" />
     <Folder Include="screenshots\" />
   </ItemGroup>
