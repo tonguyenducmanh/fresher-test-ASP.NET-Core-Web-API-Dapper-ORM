@@ -6,12 +6,6 @@ namespace fresher_test_ASP.NET_Core_Web_API.Models
     [Table("filterContent")]
     public class filterContent
     {
-        [Key]
-        public int filterContentId{ get; set; }
-
-        [ForeignKey("filter")]
-        public int filterId { get; set; } 
-        public filter filter { get; set; } 
         public string? xunghoString { get; set; } 
         public string? xunghoCondition { get; set; } 
         public string? hovademString { get; set; } 
