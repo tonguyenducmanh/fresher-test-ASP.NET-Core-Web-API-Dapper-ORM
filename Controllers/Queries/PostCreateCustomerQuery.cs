@@ -48,26 +48,30 @@ namespace fresher_test_ASP.NET_Core_Web_API_Dapper_ORM.Controllers.Queries
                 
             // thêm thẻ, loại tiềm năng, lịch sử giao dịch
 
-            if(PostCustomerBody.loaiTiemNang.Count() > 0)
+            if(PostCustomerBody.loaiTiemNang != null)
             {
                 stringCreateCustomerQuery += "INSERT INTO loaitiemnang (loaitiemnangContent, customerId) VALUES ";
-                for(int i = 0; i< PostCustomerBody.loaiTiemNang.Count() -1; i++)
-                {
-                    stringCreateCustomerQuery += $"( '{PostCustomerBody.loaiTiemNang[i]}' ,";
-                    stringCreateCustomerQuery += $"'{PostCustomerBody._id}'),";
+                if(PostCustomerBody.loaiTiemNang.Count() >1){
+                    for(int i = 0; i< PostCustomerBody.loaiTiemNang.Count() -1; i++)
+                    {
+                        stringCreateCustomerQuery += $"( '{PostCustomerBody.loaiTiemNang[i]}' ,";
+                        stringCreateCustomerQuery += $"'{PostCustomerBody._id}'),";
+                    }
                 }
                 stringCreateCustomerQuery += $"( '{PostCustomerBody.loaiTiemNang.Last()}' ,";
                 stringCreateCustomerQuery += $"'{PostCustomerBody._id}');";
 
             }
 
-            if(PostCustomerBody.the.Count() > 0)
+            if(PostCustomerBody.the != null)
             {
                 stringCreateCustomerQuery += "INSERT INTO the (theContent, customerId) VALUES ";
-                for(int i = 0; i< PostCustomerBody.the.Count() -1; i++)
-                {
-                    stringCreateCustomerQuery += $"( '{PostCustomerBody.the[i]}' ,";
-                    stringCreateCustomerQuery += $"'{PostCustomerBody._id}'),";
+                if(PostCustomerBody.the.Count() > 1){
+                    for(int i = 0; i< PostCustomerBody.the.Count() -1; i++)
+                    {
+                        stringCreateCustomerQuery += $"( '{PostCustomerBody.the[i]}' ,";
+                        stringCreateCustomerQuery += $"'{PostCustomerBody._id}'),";
+                    }
                 }
                 stringCreateCustomerQuery += $"( '{PostCustomerBody.the.Last()}' ,";
                 stringCreateCustomerQuery += $"'{PostCustomerBody._id}');";
@@ -75,13 +79,15 @@ namespace fresher_test_ASP.NET_Core_Web_API_Dapper_ORM.Controllers.Queries
             }
 
             
-            if(PostCustomerBody.history.Count() > 0)
+            if(PostCustomerBody.history != null)
             {
                 stringCreateCustomerQuery += "INSERT INTO history (historyContent, customerId) VALUES ";
-                for(int i = 0; i< PostCustomerBody.history.Count() -1; i++)
-                {
-                    stringCreateCustomerQuery += $"( '{PostCustomerBody.history[i]}' ,";
-                    stringCreateCustomerQuery += $"'{PostCustomerBody._id}'),";
+                if(PostCustomerBody.history.Count() >1){
+                    for(int i = 0; i< PostCustomerBody.history.Count() -1; i++)
+                    {
+                        stringCreateCustomerQuery += $"( '{PostCustomerBody.history[i]}' ,";
+                        stringCreateCustomerQuery += $"'{PostCustomerBody._id}'),";
+                    }
                 }
                 stringCreateCustomerQuery += $" ('{PostCustomerBody.history.Last()}' ,";
                 stringCreateCustomerQuery += $"'{PostCustomerBody._id}');";

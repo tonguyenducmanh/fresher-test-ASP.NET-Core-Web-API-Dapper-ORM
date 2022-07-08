@@ -44,33 +44,16 @@ namespace fresher_test_ASP.NET_Core_Web_API_Dapper_ORM.Controllers
                                 =>
                             {
                                 customer customerEntry;
-                                if(!customerDictionary.TryGetValue(customer._id, out customerEntry)){
+                                if (!customerDictionary.TryGetValue(customer._id, out customerEntry))
+                                {
                                     customerEntry = customer;
-                                    customerEntry.loaitiemnang = new List<string>();
-                                    customerEntry.the = new List<string>();
-                                    customerEntry.history = new List<string>();
+                                    customerEntry.loaitiemnang = loaitiemnang.loaitiemnangContent.Split("#").ToList();
+                                    customerEntry.the = the.theContent.Split("#").ToList();
+                                    customerEntry.history = history.historyContent.Split("#").ToList();
                                     customerDictionary.Add(customerEntry._id, customerEntry);
                                 }
-                                if (loaitiemnang != null)
-                                {
-                                    customerEntry.loaitiemnang.Add(loaitiemnang.loaitiemnangContent);
-                                }
-                                else { customerEntry.loaitiemnang.Add(null); }
-
-                                if(the != null)
-                                {
-                                    customerEntry.the.Add(the.theContent);
-                                }
-                                else { customerEntry.the.Add(null); }
-
-                                if(history != null)
-                                {
-                                    customerEntry.history.Add(history.historyContent);
-                                }
-                                else { customerEntry.history.Add(null); }
-
                                 return customerEntry;
-                            }, splitOn: "loaitiemnangContent, theContent,historyContent")
+                            }, splitOn: "loaitiemnangContent, theContent, historyContent")
                             .Distinct().ToList();
             }
             return Ok(customers);
@@ -121,34 +104,16 @@ namespace fresher_test_ASP.NET_Core_Web_API_Dapper_ORM.Controllers
                                 if (!customerDictionary.TryGetValue(customer._id, out customerEntry))
                                 {
                                     customerEntry = customer;
-                                    customerEntry.loaitiemnang = new List<string>();
-                                    customerEntry.the = new List<string>();
-                                    customerEntry.history = new List<string>();
+                                    customerEntry.loaitiemnang = loaitiemnang.loaitiemnangContent.Split("#").ToList();
+                                    customerEntry.the = the.theContent.Split("#").ToList();
+                                    customerEntry.history = history.historyContent.Split("#").ToList();
                                     customerDictionary.Add(customerEntry._id, customerEntry);
                                 }
-                                if (loaitiemnang != null)
-                                {
-                                    customerEntry.loaitiemnang.Add(loaitiemnang.loaitiemnangContent);
-                                }
-                                else { customerEntry.loaitiemnang.Add(null); }
-
-                                if (the != null)
-                                {
-                                    customerEntry.the.Add(the.theContent);
-                                }
-                                else { customerEntry.the.Add(null); }
-
-                                if (history != null)
-                                {
-                                    customerEntry.history.Add(history.historyContent);
-                                }
-                                else { customerEntry.history.Add(null); }
-
                                 return customerEntry;
                             }, splitOn: "loaitiemnangContent, theContent, historyContent")
                             .Distinct().ToList();
             }
-            return Ok(customers.First());
+            return Ok(customers);
         }
 
         // POST : /customers/find tìm danh sách người dùng theo id (để xuất ra file excell)
@@ -170,37 +135,19 @@ namespace fresher_test_ASP.NET_Core_Web_API_Dapper_ORM.Controllers
 
                 customers = db.Query<customer, loaitiemnang, the, history, customer>
                             (sqlGetFind, (customer, loaitiemnang, the, history)
-                                =>
+                                   =>
                             {
                                 customer customerEntry;
                                 if (!customerDictionary.TryGetValue(customer._id, out customerEntry))
                                 {
                                     customerEntry = customer;
-                                    customerEntry.loaitiemnang = new List<string>();
-                                    customerEntry.the = new List<string>();
-                                    customerEntry.history = new List<string>();
+                                    customerEntry.loaitiemnang = loaitiemnang.loaitiemnangContent.Split("#").ToList();
+                                    customerEntry.the = the.theContent.Split("#").ToList();
+                                    customerEntry.history = history.historyContent.Split("#").ToList();
                                     customerDictionary.Add(customerEntry._id, customerEntry);
                                 }
-                                if (loaitiemnang != null)
-                                {
-                                    customerEntry.loaitiemnang.Add(loaitiemnang.loaitiemnangContent);
-                                }
-                                else { customerEntry.loaitiemnang.Add(null); }
-
-                                if (the != null)
-                                {
-                                    customerEntry.the.Add(the.theContent);
-                                }
-                                else { customerEntry.the.Add(null); }
-
-                                if (history != null)
-                                {
-                                    customerEntry.history.Add(history.historyContent);
-                                }
-                                else { customerEntry.history.Add(null); }
-
                                 return customerEntry;
-                            }, splitOn: "loaitiemnangContent, theContent,historyContent")
+                            }, splitOn: "loaitiemnangContent, theContent, historyContent")
                             .Distinct().ToList();
             }
             return Ok(customers);
@@ -219,37 +166,19 @@ namespace fresher_test_ASP.NET_Core_Web_API_Dapper_ORM.Controllers
 
                 customers = db.Query<customer, loaitiemnang, the, history, customer>
                             (sqlGetCheck, (customer, loaitiemnang, the, history)
-                                =>
+                                                                   =>
                             {
                                 customer customerEntry;
                                 if (!customerDictionary.TryGetValue(customer._id, out customerEntry))
                                 {
                                     customerEntry = customer;
-                                    customerEntry.loaitiemnang = new List<string>();
-                                    customerEntry.the = new List<string>();
-                                    customerEntry.history = new List<string>();
+                                    customerEntry.loaitiemnang = loaitiemnang.loaitiemnangContent.Split("#").ToList();
+                                    customerEntry.the = the.theContent.Split("#").ToList();
+                                    customerEntry.history = history.historyContent.Split("#").ToList();
                                     customerDictionary.Add(customerEntry._id, customerEntry);
                                 }
-                                if (loaitiemnang != null)
-                                {
-                                    customerEntry.loaitiemnang.Add(loaitiemnang.loaitiemnangContent);
-                                }
-                                else { customerEntry.loaitiemnang.Add(null); }
-
-                                if (the != null)
-                                {
-                                    customerEntry.the.Add(the.theContent);
-                                }
-                                else { customerEntry.the.Add(null); }
-
-                                if (history != null)
-                                {
-                                    customerEntry.history.Add(history.historyContent);
-                                }
-                                else { customerEntry.history.Add(null); }
-
                                 return customerEntry;
-                            }, splitOn: "loaitiemnangContent, theContent,historyContent")
+                            }, splitOn: "loaitiemnangContent, theContent, historyContent")
                             .Distinct().ToList();
             }
             return Ok(customers.First());
