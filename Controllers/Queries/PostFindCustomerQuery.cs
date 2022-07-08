@@ -18,13 +18,10 @@
             }
             var stringGetLastCustomerQuery =
                 "SELECT c.*, "
-                + "l.loaitiemnangContent AS loaitiemnangContent,"
-                + " t.theContent AS theContent,"
-                + " h.historyContent AS historyContent"
+                + "( SELECT group_concat(l.loaitiemnangContent SEPARATOR  '#') FROM loaitiemnang l WHERE l.customerId = c._id  ) AS loaitiemnangContent,"
+                + " ( SELECT group_concat(t.theContent SEPARATOR  '#') FROM the t WHERE t.customerId = c._id  ) AS theContent,"
+                + "( SELECT group_concat(h.historyContent SEPARATOR  '#') FROM history h WHERE h.customerId = c._id  ) AS historyContent"
                 + " FROM customer c"
-                + " LEFT JOIN loaitiemnang l ON c._id = l.customerId"
-                + " LEFT JOIN the t ON c._id = t.customerId"
-                + " LEFT JOIN history h ON c._id = h.customerId"
                 + $" WHERE c._id  IN ({query}) ";
 
             return stringGetLastCustomerQuery;
