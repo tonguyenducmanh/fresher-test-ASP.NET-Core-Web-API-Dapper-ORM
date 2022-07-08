@@ -15,3 +15,8 @@ https://github.com/tonguyenducmanh/fresher-test-NodeJS-ExpressJS
 - Dapper
 - MySQL.Data
 
+## Sử dụng SubQueries do có nhiều bảng liên kết với bảng customer, giảm tải multi mapping sau khi query bằng dapper
+![Subqueries](./screenshots/1.png)
+![Subqueries](./screenshots/2.png)
+
+## Kết quả trả về hoàn toàn tương tự như 2 project fresher-test còn lại
